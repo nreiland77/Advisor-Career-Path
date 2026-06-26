@@ -410,6 +410,235 @@
   }
 
   /* ---------------------------------------------------------
+     5b. Interactive compensation calculator
+     --------------------------------------------------------- */
+  function initCalc() {
+    if (!$("#calc")) return;
+    var YEARS = 10;
+    var P = {
+      salaryY1:     { label: "Year-1 salary ($)",         val: 75000, type: "money" },
+      rate2nd:      { label: "2nd Chair payout",           val: 0.025, type: "pct" },
+      rateShotgun:  { label: "2nd Chair (shotgun) payout", val: 0.10,  type: "pct" },
+      rateGiven:    { label: "Given client recurring",     val: 0.15,  type: "pct" },
+      rateClosed:   { label: "Lead-closed payout",         val: 0.25,  type: "pct" },
+      aumMix:       { label: "AUM mix",                    val: 0.70,  type: "pct" },
+      aumFee:       { label: "AUM avg fee",                val: 0.01,  type: "pct" },
+      insComm:      { label: "Insurance avg commission",   val: 0.07,  type: "pct" },
+      recurGrowth:  { label: "Recurring growth / yr",      val: 0.03,  type: "pct" },
+      bonusPct:     { label: "Company bonus (% salary)",   val: 0.10,  type: "pct" },
+      givenReduce:  { label: "Salary cut: given rev",      val: 1.00,  type: "pct" },
+      closedReduce: { label: "Salary cut: closed rev",     val: 0.75,  type: "pct" }
+    };
+    var CATS = [
+      { key: "second",  label: "2nd Chair" },
+      { key: "shotgun", label: "2nd Chair (shotgun)" },
+      { key: "given",   label: "Lead — given clients" },
+      { key: "closed",  label: "Lead — self-closed" }
+    ];
+    function m(x) { return x * 1000000; }
+    var assets = {};
+    CATS.forEach(function (c) { assets[c.key] = new Array(YEARS).fill(0); });
+
+    var PRESETS = {
+      blank: function () {
+        CATS.forEach(function (c) { assets[c.key] = new Array(YEARS).fill(0); });
+        P.salaryY1.val = 60000;
+      },
+      second: function () {
+        P.salaryY1.val = 60000;
+        assets.second  = [10, 10, 8, 6, 4, 2, 0, 0, 0, 0].map(m);
+        assets.shotgun = [5, 8, 8, 6, 4, 2, 0, 0, 0, 0].map(m);
+        assets.given   = new Array(YEARS).fill(0);
+        assets.closed  = new Array(YEARS).fill(0);
+      },
+      lead: function () {
+        P.salaryY1.val = 75000;
+        assets.second  = [10, 5, 2, 0, 0, 0, 0, 0, 0, 0].map(m);
+        assets.shotgun = [5, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(m);
+        assets.given   = [0, 10, 10, 10, 0, 0, 0, 0, 0, 0].map(m);
+        assets.closed  = [0, 10, 13, 15, 17, 20, 20, 25, 25, 25].map(m);
+      }
+    };
+
+    function compute() {
+      var p = {};
+      Object.keys(P).forEach(function (k) { p[k] = P[k].val; });
+      var insMix = 1 - p.aumMix;
+      var blend = p.aumMix * p.aumFee + insMix * p.insComm;  // first-year revenue per $
+      var ru = p.aumMix * p.aumFee;                          // recurring AUM per $ (insurance = first year only)
+      var R = { salary: [], c2nd: [], cShot: [], givenRec: [], closed1st: [], closedRec: [], bonus: [], total: [], vc: [] };
+      for (var i = 0; i < YEARS; i++) {
+        R.c2nd[i]  = assets.second[i]  * blend * p.rate2nd;
+        R.cShot[i] = assets.shotgun[i] * blend * p.rateShotgun;
+        R.closed1st[i] = assets.closed[i] * blend * p.rateClosed;
+        R.givenRec[i] = (i > 0 ? R.givenRec[i - 1] * (1 + p.recurGrowth) : 0) + assets.given[i] * ru * p.rateGiven;
+        R.closedRec[i] = (i > 0 ? R.closedRec[i - 1] * (1 + p.recurGrowth) : 0) + (i > 0 ? assets.closed[i - 1] * ru * p.rateClosed : 0);
+        if (i === 0) {
+          R.salary[i] = p.salaryY1;
+        } else {
+          var gInc = R.givenRec[i] - R.givenRec[i - 1];
+          var cInc = R.closedRec[i] - R.closedRec[i - 1];
+          R.salary[i] = Math.max(0, R.salary[i - 1] - gInc * p.givenReduce - cInc * p.closedReduce);
+        }
+        R.bonus[i] = R.salary[i] * p.bonusPct;
+        R.total[i] = R.salary[i] + R.c2nd[i] + R.cShot[i] + R.givenRec[i] + R.closed1st[i] + R.closedRec[i] + R.bonus[i];
+        R.vc[i] = R.c2nd[i] + R.cShot[i] + R.bonus[i];
+      }
+      return R;
+    }
+
+    var fmt = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+    function money(x) { return fmt.format(Math.round(x)); }
+
+    function buildParams() {
+      var host = $("#calc-params");
+      host.innerHTML = "";
+      Object.keys(P).forEach(function (k) {
+        var f = P[k];
+        var div = el("div", "calc__field");
+        var val = f.type === "pct" ? +(f.val * 100).toFixed(4) : f.val;
+        div.innerHTML = '<label>' + esc(f.label) + (f.type === "pct" ? " (%)" : "") + '</label>' +
+          '<input type="number" step="any" data-pk="' + k + '" value="' + val + '">';
+        host.appendChild(div);
+      });
+      host.querySelectorAll("input").forEach(function (inp) {
+        inp.addEventListener("input", function () {
+          var v = parseFloat(inp.value); if (isNaN(v)) v = 0;
+          var k = inp.getAttribute("data-pk");
+          P[k].val = P[k].type === "pct" ? v / 100 : v;
+          render();
+        });
+      });
+    }
+
+    function buildAssets() {
+      var t = $("#calc-assets");
+      var head = "<thead><tr><th>Category ($M)</th>";
+      for (var y = 1; y <= YEARS; y++) head += "<th>Yr " + y + "</th>";
+      head += "</tr></thead>";
+      var body = "<tbody>";
+      CATS.forEach(function (c) {
+        body += "<tr><td>" + esc(c.label) + "</td>";
+        for (var y = 0; y < YEARS; y++) {
+          body += '<td><input class="calc__cell" data-cat="' + c.key + '" data-yr="' + y + '" type="number" step="any"></td>';
+        }
+        body += "</tr>";
+      });
+      body += "</tbody>";
+      t.innerHTML = head + body;
+      t.querySelectorAll(".calc__cell").forEach(function (inp) {
+        inp.addEventListener("input", function () {
+          var v = parseFloat(inp.value); if (isNaN(v)) v = 0;
+          assets[inp.getAttribute("data-cat")][+inp.getAttribute("data-yr")] = v * 1000000;
+          render();
+        });
+      });
+    }
+    function syncAssets() {
+      document.querySelectorAll("#calc-assets .calc__cell").forEach(function (inp) {
+        var v = assets[inp.getAttribute("data-cat")][+inp.getAttribute("data-yr")] / 1000000;
+        inp.value = v ? +v.toFixed(2) : "";
+      });
+    }
+
+    var ROWS = [
+      { key: "salary",    label: "Base salary" },
+      { key: "c2nd",      label: "2nd Chair payout" },
+      { key: "cShot",     label: "2nd Chair (shotgun)" },
+      { key: "givenRec",  label: "Given recurring" },
+      { key: "closed1st", label: "Lead-closed (1st yr)" },
+      { key: "closedRec", label: "Lead-closed recurring" },
+      { key: "bonus",     label: "Company bonus" }
+    ];
+    function buildResults(R) {
+      var t = $("#calc-results");
+      var head = "<thead><tr><th>Component</th>";
+      for (var y = 1; y <= YEARS; y++) head += "<th>Yr " + y + "</th>";
+      head += "</tr></thead>";
+      var body = "<tbody>";
+      ROWS.forEach(function (r) {
+        body += '<tr class="calc__sub"><td>' + esc(r.label) + "</td>";
+        for (var y = 0; y < YEARS; y++) body += "<td>" + money(R[r.key][y]) + "</td>";
+        body += "</tr>";
+      });
+      body += '<tr class="calc__total"><td>Total comp</td>';
+      for (var y = 0; y < YEARS; y++) body += "<td>" + money(R.total[y]) + "</td>";
+      body += "</tr>";
+      body += '<tr class="calc__vc"><td>of which bonus / variable</td>';
+      for (var y = 0; y < YEARS; y++) body += "<td>" + money(R.vc[y]) + "</td>";
+      body += "</tr></tbody>";
+      t.innerHTML = head + body;
+    }
+
+    var SEGS = [
+      { key: "salary",    label: "Base salary",           color: "#001f60" },
+      { key: "c2nd",      label: "2nd Chair payout",       color: "#3a57a8" },
+      { key: "cShot",     label: "2nd Chair (shotgun)",    color: "#6f88c9" },
+      { key: "givenRec",  label: "Given recurring",        color: "#2f7d6d" },
+      { key: "closed1st", label: "Lead-closed (1st yr)",   color: "#b9852b" },
+      { key: "closedRec", label: "Lead-closed recurring",  color: "#e0b56a" },
+      { key: "bonus",     label: "Company bonus",          color: "#9aa3b2" }
+    ];
+    function buildLegend() {
+      var host = $("#calc-legend");
+      if (!host) return;
+      host.innerHTML = SEGS.map(function (s) {
+        return '<span class="calc__leg"><i style="background:' + s.color + '"></i>' + esc(s.label) + "</span>";
+      }).join("");
+    }
+    function buildChart(R) {
+      var host = $("#calc-chart");
+      if (!host) return;
+      var maxTotal = Math.max.apply(null, R.total) || 1;
+      var cols = "";
+      for (var y = 0; y < YEARS; y++) {
+        var segs = "";
+        for (var s = 0; s < SEGS.length; s++) {
+          var v = R[SEGS[s].key][y];
+          var h = (v / maxTotal) * 100;
+          if (h > 0.15) segs += '<span class="calc__seg" style="height:' + h.toFixed(2) + '%;background:' + SEGS[s].color + '" title="' + esc(SEGS[s].label) + ': ' + money(v) + '"></span>';
+        }
+        cols += '<div class="calc__col"><span class="calc__coltot">' + money(R.total[y]).replace("$", "$") + '</span>' +
+          '<span class="calc__stack">' + segs + '</span><span class="calc__xlab">Yr ' + (y + 1) + '</span></div>';
+      }
+      host.innerHTML = cols;
+    }
+
+    function explainer(R) {
+      var peak = Math.max.apply(null, R.total);
+      var peakYr = R.total.indexOf(peak) + 1;
+      var host = $("#calc-explain");
+      if (!host) return;
+      host.innerHTML = "<strong>Reading this scenario:</strong> total comp moves from " + money(R.total[0]) +
+        " in Year 1 to " + money(R.total[YEARS - 1]) + " by Year 10, peaking around " + money(peak) +
+        " (Yr " + peakYr + "). As recurring revenue builds, base salary steps down and pay shifts toward variable and recurring streams.";
+    }
+
+    function render() {
+      var R = compute();
+      buildResults(R);
+      buildChart(R);
+      explainer(R);
+    }
+
+    document.querySelectorAll(".calc__preset").forEach(function (b) {
+      b.addEventListener("click", function () {
+        PRESETS[b.getAttribute("data-preset")]();
+        buildParams();
+        syncAssets();
+        render();
+      });
+    });
+
+    PRESETS.lead();
+    buildParams();
+    buildAssets();
+    buildLegend();
+    syncAssets();
+    render();
+  }
+
+  /* ---------------------------------------------------------
      6. Internal / Recruiting view toggle
      --------------------------------------------------------- */
   function wireToggle() {
@@ -436,6 +665,7 @@
     buildScorecards();
     buildComp();
     buildDecisions();
+    initCalc();
     wireToggle();
     select(state.activeId);
   }

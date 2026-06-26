@@ -167,6 +167,32 @@
         </div>
       </div>
       <p class="comp-note">All figures are placeholders pending leadership confirmation.</p>
+
+      <!-- Interactive compensation calculator -->
+      <div class="calc" id="calc">
+        <h3 class="calc__title">Model your compensation</h3>
+        <p class="comp-note">A what-if sandbox: enter the hypothetical assets you expect to close each year. Nothing here reflects actual production. Assets are total household, split 70% AUM / 30% insurance; insurance pays first-year commission only.</p>
+        <div class="calc__presets">
+          <button type="button" class="calc__preset is-mint" data-preset="second">Second Chair scenario</button>
+          <button type="button" class="calc__preset" data-preset="lead">Lead Advisor scenario</button>
+          <button type="button" class="calc__preset is-ghost" data-preset="blank">Clear</button>
+        </div>
+        <details class="calc__params-wrap">
+          <summary>Model assumptions (click to adjust)</summary>
+          <div class="calc__params" id="calc-params"><!-- filled by app.js --></div>
+        </details>
+        <div class="calc__block">
+          <h4 class="calc__h4">Assets closed per year <span class="calc__hint">($ millions)</span></h4>
+          <div class="table-scroll"><table class="calc__grid" id="calc-assets"><!-- filled by app.js --></table></div>
+        </div>
+        <div class="calc__block">
+          <h4 class="calc__h4">Projected compensation</h4>
+          <div class="table-scroll"><table class="calc__grid" id="calc-results"><!-- filled by app.js --></table></div>
+          <div class="calc__legend" id="calc-legend"><!-- filled by app.js --></div>
+          <div class="calc__chart" id="calc-chart"><!-- filled by app.js --></div>
+        </div>
+        <p class="comp-note calc__explain" id="calc-explain"><!-- filled by app.js --></p>
+      </div>
     </div>
   </section>
 

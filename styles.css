@@ -405,3 +405,59 @@ body[data-view="recruiting"] [data-internal] { display: none; }
   .stage svg, .stage__label { display: none; }
   .node { position: static; transform: none; width: auto; }
 }
+
+/* ============================================================
+   Compensation calculator (lives in the dark comp band)
+   ============================================================ */
+.calc { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.18); }
+.calc__title { font-family: var(--serif); font-weight: 600; color: #fff; font-size: 1.5rem; margin: 0 0 6px; }
+.calc__h4 { font-family: var(--serif); font-weight: 600; color: #fff; font-size: 1.1rem; margin: 22px 0 4px; }
+.calc__hint { color: #8fb0d8; font-weight: 400; font-size: .9rem; }
+.calc__block { margin-top: 8px; }
+.calc__explain { color: #bcccdf; }
+
+.calc__presets { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 4px; }
+.calc__preset { font: 700 .85rem/1 var(--sans); cursor: pointer; padding: 9px 16px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff; transition: .15s; }
+.calc__preset:hover { background: #fff; color: var(--navy); }
+.calc__preset.is-mint { border-color: var(--mint); color: #bfe3d8; }
+.calc__preset.is-mint:hover { background: var(--mint); color: #fff; }
+.calc__preset.is-ghost { border-color: rgba(255,255,255,.25); color: #8fb0d8; }
+.calc__preset.is-ghost:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+.calc__params-wrap { margin-top: 16px; }
+.calc__params-wrap summary { cursor: pointer; font-weight: 700; color: #cdd9ea; padding: 4px 0; }
+.calc__params { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px 18px; margin-top: 14px; }
+.calc__field { display: flex; flex-direction: column; gap: 4px; }
+.calc__field label { font: 600 .74rem/1.2 var(--sans); color: #8fb0d8; }
+.calc__field input, .calc__cell { font: inherit; color: #fff; background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.22); border-radius: 8px; padding: 7px 9px; }
+.calc__field input:focus, .calc__cell:focus { outline: 2px solid var(--gold); border-color: var(--gold); }
+
+table.calc__grid { width: 100%; min-width: 880px; border-collapse: collapse; font-size: .82rem; margin-top: 6px; }
+table.calc__grid th { text-align: right; padding: 8px 10px; background: rgba(255,255,255,.08); color: #fff;
+  font-weight: 700; font-size: .72rem; white-space: nowrap; }
+table.calc__grid th:first-child { text-align: left; }
+table.calc__grid td { padding: 7px 10px; border-top: 1px solid rgba(255,255,255,.12); color: #bcccdf;
+  text-align: right; white-space: nowrap; }
+table.calc__grid td:first-child { text-align: left; color: #fff; }
+.calc__cell { width: 70px; text-align: right; padding: 5px 6px; }
+tr.calc__sub td:first-child { color: #cdd9ea; font-weight: 500; }
+tr.calc__total td { border-top: 2px solid var(--gold); color: #fff; font-weight: 800; background: rgba(185,133,43,.18); }
+tr.calc__vc td { color: #e0b56a; font-style: italic; }
+
+.calc__legend { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 18px; }
+.calc__leg { display: inline-flex; align-items: center; gap: 6px; font-size: .74rem; color: #cdd9ea; }
+.calc__leg i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+.calc__chart { display: flex; gap: 6px; align-items: flex-end; height: 240px; margin-top: 14px; }
+.calc__col { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
+.calc__coltot { font: 700 .58rem/1 var(--sans); color: #fff; margin-bottom: 4px; white-space: nowrap; }
+.calc__stack { width: 74%; flex: 1; display: flex; flex-direction: column-reverse; border-radius: 3px 3px 0 0; overflow: hidden; min-height: 1px; }
+.calc__seg { width: 100%; display: block; }
+.calc__xlab { margin-top: 6px; font: 600 .68rem/1 var(--sans); color: #bcccdf; }
+
+@media (max-width: 900px) {
+  .calc__chart { height: 200px; }
+  .calc__coltot { font-size: .5rem; }
+}
