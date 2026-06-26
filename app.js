@@ -15,7 +15,7 @@
         id: "csa", title: "Client Service Advisor", track: "advisor", trackLabel: "Advisor Track",
         level: "Levels I–III", experience: "Approx. 0–3 years",
         designation: "Series 65 and Life/Health within first 120 days",
-        mission: "Create a dependable service and meeting-support runway below the second-chair seat.",
+        mission: "Create a dependable service and meeting-support runway below the second-chair seat, working hand in hand with the client service team.",
         focus: [
           "Sit in client and prospect meetings, capture notes, and own follow-up discipline.",
           "Maintain service dashboards, CRM detail, new-business checklists, and client task flow.",
@@ -36,7 +36,7 @@
       },
       {
         id: "paraplanner", title: "Paraplanner", track: "planning", trackLabel: "Planning Specialist Track",
-        level: "Paraplanner I → Senior Planning Specialist", experience: "Approx. 0–5+ years",
+        level: "Paraplanner I → Senior Paraplanner", experience: "Approx. 0–5+ years",
         designation: "Series 65 within first 120 days; CFP preferred for senior levels",
         mission: "Build a respected technical planning path for professionals who want planning depth without being pushed into lead-advisor sales leadership.",
         focus: [
@@ -54,7 +54,7 @@
         levels: [
           { name: "Paraplanner I", text: "Owns data organization, planning software inputs, basic ERP meeting prep, and plan maintenance." },
           { name: "Paraplanner II", text: "Creates planning ideas, prepares scenario analysis, drafts ERP recommendations, and supports advisor inquiries." },
-          { name: "Lead / Senior", text: "Handles complex planning, reviews ERP deliverables, trains the team, and leads planning standards." }
+          { name: "Senior Paraplanner", text: "Handles complex planning, reviews ERP deliverables, trains the team, and protects planning standards while developing toward Director." }
         ]
       },
       {
@@ -75,8 +75,7 @@
           "Operates as a firm-first technical leader across advisor teams."
         ],
         levels: [
-          { name: "Director", text: "Owns planning methodology, complex-case leadership, and the planning team's standards and development." },
-          { name: "Senior Director", text: "Extends technical authority across planning and investments, shapes firm strategy, and prepares for partner-level stewardship." }
+          { name: "Director of Financial Planning", text: "The top rung of the planning track — owns planning methodology, leads the most complex cases, develops the planning bench, and may progress toward partner-level stewardship." }
         ]
       },
       {
@@ -125,9 +124,9 @@
           "Client trust, team trust, and firm-first behavior remain visible under pressure."
         ],
         levels: [
-          { name: "Lead Advisor I", text: "Relationship lead for selected A/B clients, ERP delivery mastery, and draft goal of $8M NAUA annually." },
-          { name: "Lead Advisor II", text: "Lead advisor on A clients, strong Strategy Session and ERP leadership, and draft goal of $12M NAUA annually." },
-          { name: "Lead Advisor III", text: "Lead advisor on AAA clients, strong mentoring leverage across the Experience, and draft goal of $16M NAUA annually." }
+          { name: "Lead Advisor I", text: "Relationship lead for selected A/B clients, ERP delivery mastery, and a first-full-year production goal of $15M–$20M NAUA (draft)." },
+          { name: "Lead Advisor II", text: "Lead advisor on A clients, strong Strategy Session and ERP leadership, and a production goal of $20M–$30M NAUA (draft)." },
+          { name: "Lead Advisor III", text: "Lead advisor on AAA clients, strong mentoring leverage across the Experience, and a production goal of $30M+ NAUA (draft)." }
         ]
       },
       {
@@ -227,15 +226,11 @@
     },
 
     decisions: [
-      { priority: "High", title: "Finalize role names and levels", items: ["Confirm Second Chair Advisor I–III naming.", "Confirm Paraplanner I/II, Lead Paraplanner, Senior Planning Specialist naming.", "Confirm whether Partner has candidate and senior stages."] },
-      { priority: "High", title: "Define the 4 Cs scoring rubric", items: ["Draft what each C means by role.", "Add sales goals under Competency for Second Chair, Lead, and Partner.", "Set pass, caution, and not-ready standards."] },
-      { priority: "High", title: "Set compensation permissions", items: ["Decide who can view individual compensation pages.", "Define which figures are visible to all advisors.", "Create advisor-specific compensation templates."] },
-      { priority: "Medium", title: "Define client segments", items: ["Set AAA, A, B, and C thresholds.", "Confirm when a two-chair structure is required.", "Validate whether clients under $500k should have only one advisor."] },
-      { priority: "Medium", title: "Lock KPI targets", items: ["Define NAUA, new revenue, and revenue credit.", "Confirm Lead Advisor draft goals of $8M, $12M, $16M NAUA.", "Set CSA, Paraplanner, Strategy Session, and ERP-delivery metrics."] },
-      { priority: "Medium", title: "Finish Partner readiness", items: ["Define equity buy-in or grant philosophy.", "Set ownership economics guardrails.", "Clarify leadership, client, and growth evidence required."] },
-      { priority: "Low", title: "Clean up legacy terms", items: ["Define or remove TBP 1.0 and TBP 2.0.", "Translate older deck language into current VPF language.", "Remove outdated client segment names from legacy drafts."] },
-      { priority: "Low", title: "Recruiting deliverable", items: ["Create limited candidate page from this portal.", "Remove comp formulas, internal scorecards, and unresolved decisions.", "Keep the message centered on development and team-based work."] },
-      { priority: "Low", title: "Governance cadence", items: ["Set quarterly career-path review rhythm.", "Choose owner for maintaining the portal.", "Define how role updates are approved."] }
+      { priority: "High", title: "Define the 4 Cs scoring rubric", items: ["Spell out what each C means by role and level.", "Add sales goals under Competency for Second Chair, Lead, and Partner.", "Set pass, caution, and not-ready standards."] },
+      { priority: "High", title: "Build the compensation programs", items: ["A general calculator advisors can model with — no individual production shown.", "Dedicated Second Chair and Lead Advisor comp templates.", "Confirm which figures are visible to all advisors."] },
+      { priority: "Medium", title: "Lock KPI and production targets", items: ["Define NAUA, new revenue, and revenue credit.", "Lead Advisor production starts at $15M–$20M NAUA in the first full year.", "Set CSA, Paraplanner, Strategy Session, and ERP-delivery metrics."] },
+      { priority: "Medium", title: "Finish Partner readiness", items: ["Decide equity buy-in vs. grant philosophy.", "Set ownership economics guardrails.", "List the leadership, client, and growth evidence required."] },
+      { priority: "Low", title: "Publish the recruiting version", items: ["Polished public page that mirrors the internal portal.", "Strip comp formulas, internal scorecards, and open decisions.", "Lead with building a great career and life at VPF."] }
     ]
   };
 
