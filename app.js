@@ -58,6 +58,28 @@
         ]
       },
       {
+        id: "planning-director", title: "Director of Financial Planning", track: "planning", trackLabel: "Planning Specialist Track",
+        level: "Specialist leadership", experience: "Approx. 8+ years",
+        designation: "CFP required; advanced planning or investment credentials preferred",
+        mission: "Own the firm's financial-planning methodology and the technical quality of every Elevated Retirement Plan — the deepest planning authority at the firm.",
+        focus: [
+          "Set and protect ERP standards, templates, and the planning quality bar across every team.",
+          "Lead the most complex, high-net-worth, and multi-generational planning cases.",
+          "Develop the planning bench and own planning training and technical standards.",
+          "Partner with advisors and leadership on planning strategy, tools, and capacity."
+        ],
+        promotion: [
+          "ERP methodology is consistent, current, and trusted firmwide.",
+          "Complex cases are handled with authority and sound judgment.",
+          "Planning-team capability and retention improve under their leadership.",
+          "Operates as a firm-first technical leader across advisor teams."
+        ],
+        levels: [
+          { name: "Director", text: "Owns planning methodology, complex-case leadership, and the planning team's standards and development." },
+          { name: "Senior Director", text: "Extends technical authority across planning and investments, shapes firm strategy, and prepares for partner-level stewardship." }
+        ]
+      },
+      {
         id: "second-chair", title: "Second Chair Advisor", track: "advisor", trackLabel: "Advisor Track",
         level: "Levels I–III", experience: "Approx. 3–7 years",
         designation: "CFP coursework started; advanced designation expected before Lead",
@@ -73,6 +95,7 @@
         promotion: [
           "Can lead 10 new clients with a Lead Advisor present to observe, support, and coach.",
           "Progresses from observing Strategy Sessions to leading them independently.",
+          "Competently presents VPF's core strategies with clients and prospects: the ERP, The Bucket Plan, planning materials, recommended portfolios, review meeting documents, and software projections and modeling.",
           "Creates client confidence through preparation, clear communication, and steady follow-through.",
           "Manages household task flow so Lead Advisors trust nothing will fall through the cracks.",
           "Demonstrates light to moderate business-development activity appropriate to level.",
@@ -136,6 +159,7 @@
     seats: {
       "csa": { people: [], note: "Proposed new role" },
       "paraplanner": { people: [], note: "Vacant — hiring" },
+      "planning-director": { people: [], note: "Proposed new role" },
       "second-chair": { people: ["Andrew", "Brennan", "Luke", "Sophia"], note: "" },
       "lead": { people: ["Nick", "Tim", "Don"], note: "" },
       "partner": { people: ["Nick", "Tim"], note: "" }
@@ -148,11 +172,12 @@
       "second-chair": { x: 37, b: 45 },
       "lead":         { x: 63, b: 64 },
       "partner":      { x: 88, b: 80 },
-      "paraplanner":  { x: 40, b: 9 }
+      "paraplanner":  { x: 33, b: 9 },
+      "planning-director": { x: 60, b: 20 }
     },
 
     // The advisor ladder, in climbing order, plus the planning branch.
-    mapOrder: ["csa", "second-chair", "lead", "partner", "paraplanner"],
+    mapOrder: ["csa", "second-chair", "lead", "partner", "paraplanner", "planning-director"],
 
     matrix: {
       cols: ["Client workflow", "CSA", "Paraplanner", "Second Chair", "Lead Advisor", "Partner"],
@@ -176,7 +201,7 @@
 
     gates: [
       { from: "CSA → Second Chair", text: "Service execution, meeting-note quality, follow-up reliability, licensing within 120 days, and Experience readiness." },
-      { from: "Second Chair level progression", text: "Household task ownership, service-team coordination, ERP delivery, Strategy Session readiness, and 10 new clients led with a Lead Advisor observing." },
+      { from: "Second Chair level progression", text: "Household task ownership, service-team coordination, Strategy Session readiness, 10 new clients led with a Lead Advisor observing, and competent presentation of VPF's core strategies: the ERP, The Bucket Plan, planning materials, recommended portfolios, review meeting documents, and software projections and modeling." },
       { from: "Second Chair → Lead Advisor", text: "Advanced designation, relationship readiness, ability to close and retain clients, referral discipline, and consistent 4 Cs." },
       { from: "Lead Advisor → Partner", text: "Durable growth, firm-first leadership, culture stewardship, top-client trust, economics, and a clear ownership mindset." }
     ],
@@ -184,7 +209,7 @@
     scorecards: [
       { role: "Client Service Advisor", type: "Service quality", metrics: ["Meeting notes completed same or next business day", "Follow-up tasks completed by committed date", "CRM and service-dashboard data accuracy", "Experience meeting prep and follow-up quality", "New-business checklist accuracy and low rework", "Licensing completed within 120 days"] },
       { role: "Paraplanner", type: "Planning quality", metrics: ["Plan-prep turnaround by meeting deadline", "Planning model accuracy and review-pass rate", "Actionable planning ideas per case", "ERP deliverables are advisor- and client-ready", "Advisor satisfaction with deliverable readiness", "Series 65 completed within first 120 days"] },
-      { role: "Second Chair Advisor", type: "Development & delivery", metrics: ["Prep and follow-up reliability for Lead teams", "Household task ownership & project-management quality", "Client service team and CSA coordination", "Supervised new clients led toward the 10-client gate", "C/B client relationship ownership and retention", "Strategy Session proficiency by level", "Webinar and AFC class co-presentation (SC II)", "ERP delivery competency and communication confidence"] },
+      { role: "Second Chair Advisor", type: "Development & delivery", metrics: ["Prep and follow-up reliability for Lead teams", "Household task ownership & project-management quality", "Client service team and CSA coordination", "Supervised new clients led toward the 10-client gate", "C/B client relationship ownership and retention", "Strategy Session proficiency by level", "Webinar and AFC class co-presentation (SC II)", "ERP, Bucket Plan, portfolio, review document, and software-modeling presentation competency"] },
       { role: "Lead Advisor", type: "Growth & leadership", metrics: ["AAA/A client retention and Experience quality", "NAUA or new-revenue goals by level", "Referrals and COI activity", "Second Chair Advisor development outcomes", "ERP delivery consistency across teams", "Firm-first behavior in client assignment"] },
       { role: "Partner", type: "Firm stewardship", metrics: ["Firm growth and profitability health", "Leadership bench development", "Largest relationship retention and expansion", "Culture and core-values stewardship", "Elevated Retirement Plan stewardship", "Strategic initiatives completed with ownership discipline"] },
       { role: "Shared standards", type: "VPF operating rhythm", metrics: ["At least one weekly buffer day for prep and follow-up", "Focus days used for appointments, COIs, prospects, referrals", "Clients experience VPF as a team-based firm", "Strategy Sessions led by the right chair", "Career conversations use the role ladder and 4 Cs", "Individual plans reviewed on a predictable cadence"] }
